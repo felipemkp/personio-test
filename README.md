@@ -41,19 +41,15 @@ The last configuration needed is for Jenkins, described below in this README.
 
 To use the remote option, first, you'll need to provide the infrastructure. This is obtainable through Kops (https://github.com/kubernetes/kops), a tool recommended in Kubernetes documentation for AWS deploys. To still use tools that are more common the following commands will generate an Terraform configuration. Since it generates the code from a few parameters, the cluster will be named k8s.felipemkp.com. Before anything else, its necessary to create kops user:
 
-aws iam create-group --group-name kops
-
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/IAMFullAccess --group-name kops
-aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonVPCFullAccess --group-name kops
-
-aws iam create-user --user-name kops
-
-aws iam add-user-to-group --user-name kops --group-name kops
-
-aws iam create-access-key --user-name kops
+        $ aws iam create-group --group-name kops
+        $ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --group-name kops
+        $ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess --group-name kops
+        $ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --group-name kops
+        $ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/IAMFullAccess --group-name kops
+        $ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonVPCFullAccess --group-name kops
+        $ aws iam create-user --user-name kops
+        $ aws iam add-user-to-group --user-name kops --group-name kops
+        $ aws iam create-access-key --user-name kops
 
 
 With the output of the last command, it's necessary to run aws configure inserting the credentials that were generate and then  configure them on environment variables:
