@@ -12,7 +12,7 @@ pipeline {
         echo "$version"
         echo 'fazendo pull'
         sh 'set +x && git config --global http.sslVerify false'
-        git branch: "master", url: "https://github.com/felipemkp/pre_final.git" 
+        git branch: "master", url: "https://github.com/felipemkp/personio-test.git" 
         echo 'buildando'
         sh "docker login -u=${username} -p=${passwd}"
         sh "set +x && docker build -t felipemkp/default:${version} app/."
