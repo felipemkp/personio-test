@@ -1,0 +1,16 @@
+[k8s]
+35.171.157.111
+
+[telegraf]
+35.171.157.111
+3.85.90.246
+
+[local]
+localhost ansible_connection=local  dev=True
+
+[k8s:vars]
+ansible_user=admin
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[telegraf:vars]
+ansible_user=admin

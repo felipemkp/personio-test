@@ -1,0 +1,38 @@
+- name: Download minikube
+  shell: "curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube"
+
+- name: Make minikube executable and move to path
+  shell: "install minikube /usr/local/bin"
+  become: yes
+
+- name: Add kubectl apt-key
+  apt_key: 
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  become: yes
+
+- name: Add kubectl apt repository
+  apt_repository: 
+    repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main' 
+    state: present 
+    filename: kubectl 
+    update_cache: yes
+  become: yes
+
+- name: Install kubectl
+  apt: 
+    name: kubectl
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Update apt and install Virtualbox
+  apt: update_cache=yes name=virtualbox state=latest
+  become: yes
+
+- name: Update apt and install Virtualbox Ext
+  apt: update_cache=yes name=virtualbox-ext-pack state=latest
+  become: yes
+
+- name: Start minikube
+  shell: "minikube start"

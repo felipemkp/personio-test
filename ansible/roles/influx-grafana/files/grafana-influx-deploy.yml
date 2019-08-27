@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-influx
+  labels:
+    app: grafana-influx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-influx
+  template:
+    metadata:
+      labels:
+        app: grafana-influx
+    spec:
+      containers:
+      - name: grafana-influx
+        image: felipemkp/grafana-influx:2 
+        ports:
+        - containerPort: 3003
+        env:
+        - name: INFLUXDB_DB
+          value: "k8s"

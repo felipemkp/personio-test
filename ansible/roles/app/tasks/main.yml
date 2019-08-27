@@ -1,0 +1,19 @@
+- name: Copy files
+  synchronize:
+    mode: push
+    src: roles/app/files/
+    dest: /home/{{ ansible_user }}/deploys
+
+- name: Creates app 
+  command: "kubectl apply -f /home/{{ ansible_user }}/deploys/app-deploy.yml"
+   
+
+- name: Expose app
+  command: "kubectl expose deployment app --port=5000 --target-port=5000 --type=LoadBalancer --name=app"
+  when: dev is not defined
+   
+
+- name: Expose app
+  command: "kubectl expose deployment app --port=5000 --target-port=5000  --type=NodePort --name=app"
+  when: dev is defined
+   

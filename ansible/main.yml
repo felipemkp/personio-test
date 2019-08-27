@@ -1,0 +1,14 @@
+---
+- hosts: "{{ env }}"
+  gather_facts: True
+  roles:
+    - {role: install_minikube, when: env == 'localhost'} 
+    - role: influx-grafana
+    - role: app
+    - role: jenkins
+
+- hosts: telegraf
+  gather_facts: True
+  become: True
+  roles:
+    - role: telegraf

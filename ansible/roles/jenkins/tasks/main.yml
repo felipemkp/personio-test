@@ -1,0 +1,22 @@
+- name: Copy files
+  synchronize:
+    mode: push
+    src: roles/jenkins/files/
+    dest: /home/{{ ansible_user }}/deploys
+
+- name: Create jenkins sa
+  command: " kubectl -n default create sa jenkins"
+
+- name: Create rolebinding
+  command: "kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=default:jenkins"
+
+- name: Creates Jenkins 
+  command: "kubectl apply -f /home/{{ ansible_user }}/deploys/jenkins-deploy.yml"
+
+- name: Expose Jenkins
+  command: "kubectl expose deployment jenkins --port=8080 --target-port=8080 --type=LoadBalancer --name=jenkins"
+  when: dev is not defined
+
+- name: Expose Jenkins
+  command: "kubectl expose deployment jenkins --port=8080 --target-port=8080 --type=NodePort --name=jenkins"
+  when: dev is defined

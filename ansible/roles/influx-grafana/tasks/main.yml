@@ -1,0 +1,25 @@
+- name: Create deploys dir
+  file:
+    path: /home/{{ ansible_user }}/deploys
+    state: directory
+
+- name: Copy files
+  synchronize:
+    mode: push
+    src: roles/influx-grafana/files/
+    dest: /home/{{ ansible_user }}/deploys
+
+- name: Creates InfluxBD and Grafana
+  shell: "kubectl apply -f /home/{{ ansible_user }}/deploys/grafana-influx-deploy.yml"
+
+- name: Expose InfluxDB
+  command: "kubectl expose deployment grafana-influx --port=8086 --target-port=8086 --type=NodePort --name=influx"
+
+- name: Expose Grafana
+  command: "kubectl expose deployment grafana-influx --port=3003 --target-port=3003 --type=LoadBalancer --name=grafana"
+  when: dev is not defined
+
+- name: Expose Local Grafana
+  command: "kubectl expose deployment grafana-influx --port=3003 --target-port=3003 --type=NodePort --name=grafana"
+  when: dev is defined
+   
